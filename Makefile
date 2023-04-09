@@ -20,7 +20,7 @@ lint-flake8: ## flake8 (linter)
 	@flake8 .
 
 lint-mypy: ## mypy (static-type checker)
-	@mypy --config-file pyproject.toml .
+	@mypy --config-file pyproject.toml . --install-types
 
 lint-mypy-report: ## run mypy & create report
 	@mypy --config-file pyproject.toml . --html-report ./mypy_html
