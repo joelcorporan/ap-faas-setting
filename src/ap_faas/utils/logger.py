@@ -151,14 +151,3 @@ class TimeColumn(ProgressColumn):
         elapsed_time = _format_time(task.elapsed)
         speed = f"{task.speed:.2f}/s" if task.speed else "?/s"
         return Text(f"[{elapsed_time}, {speed}]", style="progress.remaining")
-
-
-# class CustomProgressColumn(ProgressColumn):
-#     def render(self, task: Task) -> Text:
-#         completed = task.completed
-#         total = task.total
-#         elapsed_time = task.finished - task.started
-#         average_time = elapsed_time / completed if completed else 0
-#         return (
-#             f"Completed: {completed}/{total} Avg. time per request: {average_time:.2f}s"
-#         )
