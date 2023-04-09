@@ -29,7 +29,9 @@ jobs:
           cache: 'poetry'
       # install requirements (including dev dependencies)
       - name: Install requirements
-        run: poetry install --with lint
+        run: |
+          mypy --install-types
+          poetry install --with lint
       # run linters
       - name: Run linters
         run: |
