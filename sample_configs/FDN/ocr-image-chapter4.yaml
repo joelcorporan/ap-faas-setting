@@ -1,0 +1,64 @@
+name: lambda-exp-for-ocr-sentiment-analyzer
+data_size: 5000
+random_seed: 2022
+cpu_percentage: 90
+provider: aws
+region: us-east-1
+credentials:
+  profile: default
+concurrency:
+  wait_time: 60
+  initial: 500
+  increment: 500
+  maximum: 5000
+rate_per_request: 0
+ramp_up_time: 5
+event: https
+response_headers:
+  - function-cache
+  - execution-time
+  - expiration-time
+functions:
+- name: ocr-sentiment-analyzer
+  endpoint: https://x3frtuohca.execute-api.us-east-1.amazonaws.com
+  samples:
+  - path: ocr-sentiment-analyzer/hand-written.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-sentiment-analyzer/wall-writing.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-sentiment-analyzer/paragraph.png
+    method: GET
+    query_string:
+    body:
+  - path: ocr-sentiment-analyzer/menu.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-sentiment-analyzer/note.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-sentiment-analyzer/passage.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-sentiment-analyzer/advisory.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-sentiment-analyzer/notepad.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-sentiment-analyzer/essay.png
+    method: GET
+    query_string:
+    body:
+  - path: ocr-sentiment-analyzer/poster.jpg
+    method: GET
+    query_string:
+    body:

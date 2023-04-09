@@ -1,0 +1,29 @@
+{
+  "name": "ocr-image",
+  "version": "1.0.0",
+  "description": "Lambda function for getting text from S3 images",
+  "main": "resizer.js",
+  "scripts": {
+    "deploy": "sls deploy",
+    "remove": "sls remove",
+    "lint": "./node_modules/.bin/eslint ."
+  },
+  "author": "Joel Corporan",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "eslint": "^8.29.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "serverless-bundle": "^5.5.0",
+    "serverless-plugin-lambda-insights": "^1.6.0",
+    "serverless-s3-cleaner": "^2.0.2",
+    "serverless-s3-sync": "^3.1.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1283.0",
+    "json-stable-stringify": "^1.0.2",
+    "node-tesseract-ocr": "^2.2.1",
+    "tesseractocr": "^2.0.3"
+  }
+}

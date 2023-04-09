@@ -1,0 +1,49 @@
+service: city-weather
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  architecture: arm64
+  stage: prod
+  region: us-east-1
+  memorySize: 1024
+  timeout: 30
+  stackName: ${self:service}
+  iam:
+    role:
+      statements:
+        - Sid: "LambdaInsightsCreateLogs"
+          Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+          Resource: '*'
+        - Sid: "LambdaInsightsCreateStream"
+          Effect: Allow
+          Action:
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "arn:aws:logs:*:*:log-group:/aws/lambda-insights:*"
+
+  environment:
+    SERVICE_NAME: ${self:service}
+    EXPIRATION_TIME: 250
+    OPENWEATHERMAP_API_URL: "<<OPENWEATHERMAP_API_URL>>"
+    OPENWEATHERMAP_API_KEY: "<<OPENWEATHERMAP_API_KEY>>"
+
+plugins:
+  - serverless-plugin-lambda-insights
+
+custom:
+  lambdaInsights:
+    defaultLambdaInsights: true
+
+functions:
+  weather:
+    handler: function.handler
+    name: ${self:provider.environment.SERVICE_NAME}
+    description: Lambda function to get current weather by city
+    events:
+      - httpApi:
+          method: GET
+          path: /${self:provider.environment.SERVICE_NAME}/{any+}

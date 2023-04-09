@@ -1,0 +1,170 @@
+name: lambda-exp-for-combine-functions
+data_size: 5000
+random_seed: 2022
+cpu_percentage: 90
+provider: aws
+region: us-east-1
+credentials:
+  profile: default
+concurrency:
+  wait_time: 3
+  initial: 500
+  increment: 500
+  maximum: 5000
+rate_per_request: 0
+ramp_up_time: 5
+event: https
+response_headers:
+  - function-cache
+  - execution-time
+  - expiration-time
+functions:
+- name: image-resizer
+  endpoint: https://lambda.research.corporans.com
+  samples:
+  - path: image-resizer/acorns-play.jpg
+    method: GET
+    query_string:
+      h: 5500
+      w: 9000
+    body:
+  - path: image-resizer/artwork-birds.jpg
+    method: GET
+    query_string:
+      h: 7500
+      w: 8000
+    body:
+  - path: image-resizer/boletus-decoration.jpg
+    method: GET
+    query_string:
+      h: 4000
+      w: 8000
+    body:
+  - path: image-resizer/bowl-food-healthy.jpg
+    method: GET
+    query_string:
+      h: 5500
+      w: 8000
+    body:
+  - path: image-resizer/boy-forest.jpg
+    method: GET
+    query_string:
+      h: 7000
+      w: 10000
+    body:
+  - path: image-resizer/dog-man.jpg
+    method: GET
+    query_string:
+      h: 2750
+      w: 4000
+    body:
+  - path: image-resizer/mountain.jpg
+    method: GET
+    query_string:
+      h: 6000
+      w: 10000
+    body:
+  - path: image-resizer/naan-bread-lunch.jpg
+    method: GET
+    query_string:
+      h: 7500
+      w: 10000
+    body:
+  - path: image-resizer/plate-food-vegetables.jpg
+    method: GET
+    query_string:
+      h: 5500
+      w: 6000
+    body:
+  - path: image-resizer/road-trail-trees.jpg
+    method: GET
+    query_string:
+      h: 3000
+      w: 8000
+    body:
+- name: ocr-image
+  endpoint: https://lambda.research.corporans.com
+  samples:
+  - path: ocr-image/hand-written.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-image/wall-writing.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-image/paragraph.png
+    method: GET
+    query_string:
+    body:
+  - path: ocr-image/menu.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-image/note.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-image/passage.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-image/advisory.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-image/notepad.jpg
+    method: GET
+    query_string:
+    body:
+  - path: ocr-image/essay.png
+    method: GET
+    query_string:
+    body:
+  - path: ocr-image/poster.jpg
+    method: GET
+    query_string:
+    body:
+- name: city-weather
+  endpoint: https://lambda.research.corporans.com
+  samples:
+  - path: city-weather/atlanta
+    method: GET
+    query_string:
+    body:
+  - path: city-weather/boston
+    method: GET
+    query_string:
+    body:
+  - path: city-weather/london
+    method: GET
+    query_string:
+    body:
+  - path: city-weather/new%20york
+    method: GET
+    query_string:
+    body:
+  - path: city-weather/san%20francisco
+    method: GET
+    query_string:
+    body:
+  - path: city-weather/seattle
+    method: GET
+    query_string:
+    body:
+  - path: city-weather/chicago
+    method: GET
+    query_string:
+    body:
+  - path: city-weather/paris
+    method: GET
+    query_string:
+    body:
+  - path: city-weather/tokio
+    method: GET
+    query_string:
+    body:
+  - path: city-weather/mumbai
+    method: GET
+    query_string:
+    body:

@@ -1,0 +1,62 @@
+{
+  "name": "lambda-exp-for-ocr-sentiment-analyzer",
+  "data_size": 25,
+  "random_seed": 2022,
+  "cpu_percentage": 90,
+  "provider": "aws",
+  "region": "us-east-1",
+  "credentials": {
+    "profile": "default"
+  },
+  "concurrency": {
+    "wait_time": 3,
+    "initial": 5,
+    "increment": 5,
+    "maximum": 25
+  },
+  "rate_per_request": 0,
+  "ramp_up_time": 5,
+  "event": "https",
+  "response_headers": [
+    "function-cache",
+    "execution-time",
+    "expiration-time"
+  ],
+  "functions": [
+    {
+      "name": "ocr-sentiment-analyzer",
+      "endpoint": "https://x3frtuohca.execute-api.us-east-1.amazonaws.com",
+      "samples": [
+        {
+          "path": "ocr-sentiment-analyzer/long.png",
+          "method": "GET",
+          "query_string": null,
+          "body": null
+        },
+        {
+          "path": "ocr-sentiment-analyzer/medium.png",
+          "method": "GET",
+          "query_string": null,
+          "body": null
+        },
+        {
+          "path": "ocr-sentiment-analyzer/small.jpg",
+          "method": "GET",
+          "query_string": null,
+          "body": null
+        }
+      ]
+    }
+  ],
+  "experimental_results": {
+    "start_time": 1681052487.932806,
+    "end_time": 1681052674.489433,
+    "test_files": [
+      "test_5_concurrency.csv",
+      "test_10_concurrency.csv",
+      "test_15_concurrency.csv",
+      "test_20_concurrency.csv",
+      "test_25_concurrency.csv"
+    ]
+  }
+}

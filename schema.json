@@ -1,0 +1,178 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "data_size": {
+      "type": "number"
+    },
+    "random_seed": {
+      "type": "number"
+    },
+    "cpu_percentage": {
+      "type": "number",
+      "minimum": 10,
+      "maximum": 100
+    },
+    "provider": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "credentials": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "type": "string"
+        },
+        "access_key": {
+          "type": "string"
+        },
+        "secret_key": {
+          "type": "string"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "profile"
+          ]
+        },
+        {
+          "required": [
+            "access_key",
+            "secret_key"
+          ]
+        }
+      ]
+    },
+    "concurrency": {
+      "type": "object",
+      "required": [
+        "wait_time",
+        "initial",
+        "increment",
+        "maximum"
+      ],
+      "properties": {
+        "wait_time": {
+          "type": "number"
+        },
+        "initial": {
+          "type": "number",
+          "minimum": 1
+        },
+        "increment": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        }
+      }
+    },
+    "rate_per_request": {
+      "type": "number"
+    },
+    "ramp_up_time": {
+      "type": "number"
+    },
+    "event": {
+      "type": "string",
+      "enum": [
+        "https"
+      ]
+    },
+    "response_headers": {
+      "type": "array",
+      "contains": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_\\-]*$"
+      }
+    },
+    "functions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/function"
+      }
+    }
+  },
+  "$defs": {
+    "function": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "endpoint",
+        "samples"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the function."
+        },
+        "endpoint": {
+          "type": "string"
+        },
+        "samples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/https"
+          }
+        }
+      }
+    },
+    "https": {
+      "type": "object",
+      "required": [
+        "path",
+        "method",
+        "query_string",
+        "body"
+      ],
+      "properties": {
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Parameters within the path of the endpoint, before the query string (?). These are usually set off within curly braces."
+        },
+        "method": {
+          "type": "string",
+          "description": "HTTP method to indicate the desired action to be performed on the resource."
+        },
+        "query_string": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Parameters in the query string of the endpoint, after the ?."
+        },
+        "body": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "JSON object known as a request body. This JSON object may be a lengthy list of key-value pairs with multiple levels of nesting."
+        }
+      }
+    }
+  },
+  "required": [
+    "name",
+    "data_size",
+    "random_seed",
+    "cpu_percentage",
+    "provider",
+    "region",
+    "credentials",
+    "concurrency",
+    "rate_per_request",
+    "ramp_up_time",
+    "event",
+    "functions"
+  ]
+}

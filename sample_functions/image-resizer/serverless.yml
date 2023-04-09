@@ -1,0 +1,117 @@
+service: image-resizer
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  architecture: arm64
+  stage: prod
+  region: us-east-1
+  memorySize: 1024
+  timeout: 30
+  stackName: ${self:service}
+  iam:
+    role:
+      statements:
+        - Sid: "S3LimitedAccess"
+          Effect: Allow
+          Action:
+            - s3:*
+          Resource:
+            - arn:aws:s3::*:${self:provider.environment.IMAGE_BUCKET}
+            - arn:aws:s3::*:${self:provider.environment.IMAGE_BUCKET}/*
+        - Sid: "LambdaInsightsCreateLogs"
+          Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+          Resource: '*'
+        - Sid: "LambdaInsightsCreateStream"
+          Effect: Allow
+          Action:
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "arn:aws:logs:*:*:log-group:/aws/lambda-insights:*"
+
+
+  environment:
+    SERVICE_NAME: ${self:service}
+    EXPIRATION_TIME: 250
+    IMAGE_BUCKET: ${self:service}-bucket-${self:provider.stage}
+    IMAGE_BUCKET_PATH: images
+
+plugins:
+  - serverless-plugin-lambda-insights
+  - serverless-bundle
+  - serverless-s3-cleaner
+  - serverless-s3-sync
+
+package:
+  exclude:
+    - "data/"
+    - "data/**"
+
+custom:
+  lambdaInsights:
+    defaultLambdaInsights: true
+  bundle:
+    linting: false
+    esbuild: true
+    packagerOptions:
+      scripts:
+        - rm -rf node_modules/sharp && npm install --platform=linux --arch=arm64 sharp
+  serverless-s3-cleaner:
+    prompt: true
+    buckets:
+      - ${self:provider.environment.IMAGE_BUCKET}
+  s3Sync:
+    - bucketName: ${self:provider.environment.IMAGE_BUCKET}
+      bucketPrefix: ${self:provider.environment.IMAGE_BUCKET_PATH}/
+      localDir: data
+
+functions:
+  resizer:
+    handler: function.handler
+    name: ${self:provider.environment.SERVICE_NAME}
+    description: Lambda function for resizing S3 images
+    events:
+      - httpApi:
+          method: GET
+          path: /${self:provider.environment.SERVICE_NAME}/{any+}
+
+resources:
+  Resources:
+    StaticImagesS3Bucket:
+      Type: AWS::S3::Bucket
+      Metadata:
+        Comment: 'Bucket to store data'
+      DeletionPolicy: Delete
+      Properties:
+        BucketName: ${self:provider.environment.IMAGE_BUCKET}
+        AccessControl: PublicRead
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders: ['*']
+              AllowedMethods: [GET]
+              AllowedOrigins: ['*']
+              MaxAge: '3600'
+    StaticImagesS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Metadata:
+        Comment: 'Bucket policy to allow cloudfront to access the data'
+      Properties:
+        Bucket:
+          Ref: StaticImagesS3Bucket
+        PolicyDocument:
+          Statement:
+            - Action:
+                - "s3:GetObject"
+              Effect: "Allow"
+              Resource:
+                Fn::Join:
+                  - ""
+                  -
+                    - "arn:aws:s3:::"
+                    -
+                      Ref: StaticImagesS3Bucket
+                    - "/*"
+              Principal: "*"

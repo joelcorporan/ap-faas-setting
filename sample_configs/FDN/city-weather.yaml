@@ -1,0 +1,64 @@
+name: lambda-exp-for-city-weather
+data_size: 5000
+random_seed: 2022
+cpu_percentage: 90
+provider: aws
+region: us-east-1
+credentials:
+  profile: default
+concurrency:
+  wait_time: 10
+  initial: 500
+  increment: 500
+  maximum: 5000
+rate_per_request: 0
+ramp_up_time: 5
+event: https
+response_headers:
+  - function-cache
+  - execution-time
+  - expiration-time
+functions:
+- name: city-weather
+  endpoint: https://fdn.research.corporans.com
+  samples:
+  - path: lambda/city-weather/atlanta
+    method: GET
+    query_string:
+    body:
+  - path: lambda/city-weather/boston
+    method: GET
+    query_string:
+    body:
+  - path: lambda/city-weather/london
+    method: GET
+    query_string:
+    body:
+  - path: lambda/city-weather/new%20york
+    method: GET
+    query_string:
+    body:
+  - path: lambda/city-weather/san%20francisco
+    method: GET
+    query_string:
+    body:
+  - path: lambda/city-weather/seattle
+    method: GET
+    query_string:
+    body:
+  - path: lambda/city-weather/chicago
+    method: GET
+    query_string:
+    body:
+  - path: lambda/city-weather/paris
+    method: GET
+    query_string:
+    body:
+  - path: lambda/city-weather/tokio
+    method: GET
+    query_string:
+    body:
+  - path: lambda/city-weather/mumbai
+    method: GET
+    query_string:
+    body:

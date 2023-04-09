@@ -1,0 +1,64 @@
+name: lambda-exp-for-ocr-image
+data_size: 5000
+random_seed: 2022
+cpu_percentage: 90
+provider: aws
+region: us-east-1
+credentials:
+  profile: default
+concurrency:
+  wait_time: 150
+  initial: 500
+  increment: 500
+  maximum: 5000
+rate_per_request: 0
+ramp_up_time: 5
+event: https
+response_headers:
+  - function-cache
+  - execution-time
+  - expiration-time
+functions:
+- name: ocr-image
+  endpoint: https://fdn.research.corporans.com
+  samples:
+  - path: lambda/ocr-image/hand-written.jpg
+    method: GET
+    query_string:
+    body:
+  - path: lambda/ocr-image/wall-writing.jpg
+    method: GET
+    query_string:
+    body:
+  - path: lambda/ocr-image/paragraph.png
+    method: GET
+    query_string:
+    body:
+  - path: lambda/ocr-image/menu.jpg
+    method: GET
+    query_string:
+    body:
+  - path: lambda/ocr-image/note.jpg
+    method: GET
+    query_string:
+    body:
+  - path: lambda/ocr-image/passage.jpg
+    method: GET
+    query_string:
+    body:
+  - path: lambda/ocr-image/advisory.jpg
+    method: GET
+    query_string:
+    body:
+  - path: lambda/ocr-image/notepad.jpg
+    method: GET
+    query_string:
+    body:
+  - path: lambda/ocr-image/essay.png
+    method: GET
+    query_string:
+    body:
+  - path: lambda/ocr-image/poster.jpg
+    method: GET
+    query_string:
+    body:
