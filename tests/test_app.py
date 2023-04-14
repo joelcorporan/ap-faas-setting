@@ -6,14 +6,17 @@
 # LICENSE file in the root directory of this source tree.
 import os
 from os import path
-from unittest.mock import MagicMock, patch
+
+# from ap_faas.app import run_experiment
 
 # External imports
-import pytest
+# import pytest
 
-from ap_faas.app import run_experiment
 
-def test_run_experiment():
+# from unittest.mock import MagicMock, patch
+
+
+def test_run_experiment() -> None:
     sample_yaml = "config/test.yaml"
 
     # Set project base path
